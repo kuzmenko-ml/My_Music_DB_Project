@@ -109,3 +109,7 @@ SELECT Genre, COUNT(*) AS [Кількість пісень]
 FROM Tracks
 GROUP BY Genre
 HAVING COUNT(*) > 1;
+
+DROP TABLE ListeningHistory;
+DROP TABLE Users;
+DROP TABLE Tracks;
