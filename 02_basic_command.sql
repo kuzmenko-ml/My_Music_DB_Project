@@ -89,3 +89,23 @@ SELECT UserName AS [Ім'я], Country AS [Батьківщина],
 		ELSE '-'
 	END AS [Статус]
 FROM Users;
+
+SELECT COUNT(*) AS [Скільки всього]
+FROM Users;
+
+SELECT MAX(DurationSeconds) AS [Найдовший трек (сек)], 
+       MIN(DurationSeconds) AS [Найкоротший трек (сек)]
+FROM Tracks;
+
+SELECT SUM(DurationSeconds) AS [Загальний час (сек)], 
+       AVG(DurationSeconds) AS [Середній час треку (сек)]
+FROM Tracks;
+
+SELECT Genre, COUNT(*) AS [Кількість пісень]
+FROM Tracks
+GROUP BY Genre;
+
+SELECT Genre, COUNT(*) AS [Кількість пісень]
+FROM Tracks
+GROUP BY Genre
+HAVING COUNT(*) > 1;
