@@ -107,3 +107,15 @@ SELECT SubscriptionType, COUNT(*) AS [Users Count]
 FROM Users
 GROUP BY SubscriptionType
 ORDER BY [Users Count] ASC;
+
+SELECT Genre, COUNT(*) AS [Total Tracks]
+FROM Tracks
+GROUP BY Genre
+HAVING COUNT(*) > 2;
+
+SELECT Genre, AVG(DurationSeconds) AS [Avg Duration]
+FROM Tracks
+WHERE Title NOT LIKE 'S%'
+GROUP BY Genre
+HAVING AVG(DurationSeconds) > 150
+ORDER BY [Avg Duration] DESC;
