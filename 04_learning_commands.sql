@@ -119,3 +119,42 @@ WHERE Title NOT LIKE 'S%'
 GROUP BY Genre
 HAVING AVG(DurationSeconds) > 150
 ORDER BY [Avg Duration] DESC;
+
+SELECT t.Title, a.MusicGroup
+FROM Tracks t
+INNER JOIN Artists a ON t.Artist = a.ArtistNickname
+WHERE MusicGroup = 1;
+
+SELECT t.Title, a.ArtistNickname
+FROM Tracks t
+INNER JOIN Artists a ON t.Artist = a.ArtistNickname
+WHERE a.ArtistNickname LIKE 'П%';
+
+SELECT a.ArtistNickname, a.MusicGroup, COUNT(*) AS [Tracks Count]
+FROM Artists a 
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+GROUP BY a.ArtistNickname, a.MusicGroup
+ORDER BY [Tracks Count] DESC;
+
+SELECT a.ArtistNickname, AVG(DurationSeconds) AS [Avg Duration]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE MusicGroup = 0
+GROUP BY a.ArtistNickname
+ORDER BY [Avg Duration] ASC;
+
+SELECT a.ArtistNickname, MAX(t.DurationSeconds) AS [Max Duration]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE t.Genre <> 'Pop'
+GROUP BY a.ArtistNickname
+HAVING MAX(t.DurationSeconds) > 180
+ORDER BY a.ArtistNickname ASC;
+
+SELECT a.ArtistNickname, COUNT(*) AS [Tracks Count]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE MusicGroup = 1
+GROUP BY a.ArtistNickname
+HAVING COUNT(*) > 2
+ORDER BY [Tracks Count] DESC;
