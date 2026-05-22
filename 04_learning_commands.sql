@@ -69,3 +69,41 @@ SELECT GroupName
 FROM Groups
 WHERE Followers BETWEEN 5000 AND 50000
 	AND Country <> 'Україна';
+
+SELECT COUNT(*) AS [Special Users]
+FROM Users
+WHERE SubscriptionType = 'Premium' OR UserName NOT LIKE '%a%';
+
+SELECT MAX(DurationSeconds) - MIN(DurationSeconds) AS [Pop Difference]
+FROM Tracks
+WHERE Genre = 'Pop';
+
+SELECT ArtistNickname 
+FROM Artists
+WHERE ArtistNickname LIKE '%a' AND MusicGroup <> 0;
+
+SELECT Genre, COUNT(*) AS [Total Tracks]
+FROM Tracks
+GROUP BY Genre;
+
+SELECT Genre, AVG(DurationSeconds) AS [Average Duration]
+FROM Tracks
+WHERE DurationSeconds > 120
+GROUP BY Genre;
+
+SELECT Genre, MAX(DurationSeconds) AS [Max Duration]
+FROM Tracks
+WHERE Genre <> 'Rap'
+GROUP BY Genre
+ORDER BY [Max Duration] DESC;
+
+SELECT SubscriptionType, COUNT(*) AS [Users Count]
+FROM Users
+WHERE UserName <> 'Марічка'
+GROUP BY SubscriptionType
+ORDER BY [Users Count] ASC;
+
+SELECT SubscriptionType, COUNT(*) AS [Users Count]
+FROM Users
+GROUP BY SubscriptionType
+ORDER BY [Users Count] ASC;
