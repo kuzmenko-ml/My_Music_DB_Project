@@ -52,3 +52,20 @@ FROM Tracks;
 
 SELECT MAX(DurationSeconds) AS [Maximum], MIN(DurationSeconds) AS [Minumum]
 FROM Tracks;
+
+SELECT AVG(DurationSeconds) AS [Avarage seconds]
+FROM Tracks
+WHERE Genre = 'Pop';
+
+SELECT SUM(DurationSeconds) AS [Total Rock Time]
+FROM Tracks
+WHERE Genre = 'Rock' AND DurationSeconds > 180;
+
+SELECT GroupName 
+FROM Groups
+WHERE Followers > 5000 AND Followers < 50000 AND Country <> 'Україна';
+
+SELECT GroupName 
+FROM Groups
+WHERE Followers BETWEEN 5000 AND 50000
+	AND Country <> 'Україна';
