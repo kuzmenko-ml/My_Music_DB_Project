@@ -223,3 +223,38 @@ WHERE t.DurationSeconds > 120
 GROUP BY a.ArtistNickname
 HAVING SUM(t.DurationSeconds) > 360
 ORDER BY COUNT(DISTINCT t.Title) DESC;
+
+SELECT a.ArtistNickname, t.Title
+FROM Artists a
+LEFT JOIN Tracks t ON a.ArtistNickname = t.Artist;
+
+
+SELECT a.ArtistNickname, t.Title
+FROM Tracks t
+LEFT JOIN Artists a ON a.ArtistNickname = t.Artist;
+
+SELECT a.ArtistNickname
+FROM Artists a
+LEFT JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE t.Title IS NULL;
+
+SELECT a.ArtistNickname
+FROM Tracks t
+RIGHT JOIN Artists a ON t.Artist = a.ArtistNickname
+WHERE t.Title IS NULL;
+
+SELECT a.ArtistNickname, t.Title
+FROM Artists a
+FULL OUTER JOIN Tracks t ON a.ArtistNickname = t.Artist;
+
+SELECT ArtistNickname
+FROM Artists
+UNION ALL
+SELECT Title
+FROM Tracks;
+
+SELECT ArtistNickname
+FROM Artists
+UNION 
+SELECT Title
+FROM Tracks;
