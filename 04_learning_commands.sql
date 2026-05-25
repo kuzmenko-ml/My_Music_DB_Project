@@ -158,3 +158,68 @@ WHERE MusicGroup = 1
 GROUP BY a.ArtistNickname
 HAVING COUNT(*) > 2
 ORDER BY [Tracks Count] DESC;
+
+SELECT a.ArtistNickname, SUM(t.DurationSeconds) AS [Total Time]
+FROM Artists a
+INNER JOIN Tracks t ON a.Artistnickname = t.Artist
+WHERE a.MusicGroup = 0 AND t.Genre <> 'Alternative'
+GROUP BY a.ArtistNickname
+HAVING SUM(t.DurationSeconds) > 350
+ORDER BY [Total Time] DESC;
+
+SELECT a.ArtistNickname, COUNT(DISTINCT t.Genre) AS [Unique Genres]
+FROM Artists a
+INNER JOIN Tracks t ON a.Artistnickname = t.Artist
+GROUP BY a.ArtistNickname
+HAVING COUNT(DISTINCT t.Genre) >= 2
+ORDER BY a.ArtistNickname ASC;
+
+SELECT DISTINCT Genre
+FROM Tracks
+ORDER BY Genre ASC;
+
+SELECT Genre 
+FROM Tracks
+ORDER BY Genre ASC;
+
+SELECT Artist
+FROM Tracks;
+
+SELECT COUNT(DISTINCT Artist) AS [Total Active Artists]
+FROM Tracks;
+
+SELECT a.ArtistNickname, COUNT(DISTINCT t.Genre) AS [Genres Count]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE a.MusicGroup = 1
+GROUP BY a.ArtistNickname;
+
+SELECT t.Genre, AVG(t.DurationSeconds) AS [Average Duration]
+FROM Tracks t
+INNER JOIN Artists a ON t.Artist = a.ArtistNickname
+WHERE a.MusicGroup = 0
+GROUP BY t.Genre
+HAVING AVG(t.DurationSeconds) > 200
+ORDER BY t.Genre ASC;
+
+SELECT a.ArtistNickname, COUNT(DISTINCT t.Title) AS [Unique Tracks Count]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+GROUP BY a.ArtistNickname
+HAVING COUNT(DISTINCT t.Title) >= 3;
+
+SELECT a.ArtistNickname, COUNT(DISTINCT t.Title) AS [Tracks Count], SUM(t.DurationSeconds) AS [Total Duration]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE a.ArtistNickname LIKE '%a%' AND t.DurationSeconds > 120
+GROUP BY a.ArtistNickname
+HAVING SUM(t.DurationSeconds) > 500
+ORDER BY COUNT(DISTINCT t.Title) DESC;
+
+SELECT a.ArtistNickname, COUNT(DISTINCT t.Title) AS [Tracks Count], SUM(t.DurationSeconds) AS [Total Duration]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE t.DurationSeconds > 120
+GROUP BY a.ArtistNickname
+HAVING SUM(t.DurationSeconds) > 360
+ORDER BY COUNT(DISTINCT t.Title) DESC;
