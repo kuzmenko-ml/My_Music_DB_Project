@@ -258,3 +258,27 @@ FROM Artists
 UNION 
 SELECT Title
 FROM Tracks;
+
+SELECT UPPER(Title) AS [LOUD TITLE], LOWER(Artist) AS [quiet artist]
+FROM Tracks;
+
+SELECT LEN(Title) AS [TitleLength]
+FROM Tracks
+ORDER BY [TitleLength] DESC;
+
+SELECT SUBSTRING(Title,1,4) AS [ShortTitle]
+FROM Tracks;
+
+SELECT ArtistNickname, TRIM(ArtistNickname) AS [CleanNickname]
+FROM Artists;
+
+SELECT CONCAT(Title,' від автора ', Artist) AS [Track Card]
+FROM Tracks;
+
+SELECT GETDATE() AS [Current Server Time];
+
+SELECT YEAR(GETDATE()) AS [CURRENT YEAR],MONTH(GETDATE()) AS [CURRENT MONTH],DAY(GETDATE()) AS [CURRENT DAY];
+
+SELECT DATEDIFF(YEAR,'2019-04-12',GETDATE()) AS [YearsPasse], DATEADD(MONTH,6,GETDATE()) AS [FutureDate];
+
+SELECT ROUND(3.67, 1) AS [ClassicRound], CEILING(3.67) AS [CeilRound], FLOOR(3.67) AS [FloorRound];
