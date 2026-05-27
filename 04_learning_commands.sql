@@ -374,3 +374,41 @@ FROM Tracks;
 
 SELECT Title, Genre, DurationSeconds, (MAX(DurationSeconds) OVER(PARTITION BY Genre)) - DurationSeconds AS [SecondsToLeader]
 FROM Tracks;
+
+SELECT t.Genre, SUM(t.Price) AS [TotalGenrePrice]
+FROM Tracks t
+INNER JOIN Artists a ON t.Artist = a.ArtistNickname
+WHERE a.ArtistNickname IS NOT NULL
+GROUP BY Genre
+HAVING SUM(t.Price) > 20;
+
+SELECT t.Genre, SUM(t.Price) AS [TotalGenrePrice]
+FROM Tracks t
+INNER JOIN Artists a ON t.Artist = a.ArtistNickname
+WHERE a.ArtistNickname IS NOT NULL
+GROUP BY Genre;
+
+SELECT Title, Price, MIN(Price) OVER() AS [GlobalMinPrice]
+FROM Tracks;
+
+SELECT Title, DurationSeconds, 
+CASE
+	WHEN DurationSeconds < 180 THEN 'Short track'
+	WHEN DurationSeconds >= 180 AND DurationSeconds <= 240 THEN 'Normal track'
+	ELSE 'Long track'
+END
+FROM Tracks;
+
+INSERT INTO Tracks (Title, Artist, Genre, DurationSeconds, Price, ReleaseDate) 
+VALUES ('Ляляля тополя', 'Wellboy','Pop',165,12,'2021-06-24');
+
+
+SELECT * FROM Tracks;
+
+UPDATE Tracks 
+SET Price = 19
+WHERE Genre  = 'Pop';
+
+DELETE 
+FROM Tracks
+WHERE DurationSeconds < 60;
