@@ -282,3 +282,95 @@ SELECT YEAR(GETDATE()) AS [CURRENT YEAR],MONTH(GETDATE()) AS [CURRENT MONTH],DAY
 SELECT DATEDIFF(YEAR,'2019-04-12',GETDATE()) AS [YearsPasse], DATEADD(MONTH,6,GETDATE()) AS [FutureDate];
 
 SELECT ROUND(3.67, 1) AS [ClassicRound], CEILING(3.67) AS [CeilRound], FLOOR(3.67) AS [FloorRound];
+
+ALTER TABLE Tracks ADD Price DECIMAL(5,2);
+ALTER TABLE Tracks ADD ReleaseDate DATE;
+
+UPDATE Tracks SET Price = 15.50, ReleaseDate = '2022-03-15' WHERE TrackID = 1;
+UPDATE Tracks SET Price = 24.99, ReleaseDate = '2021-06-20' WHERE TrackID = 2;
+UPDATE Tracks SET Price = 19.00, ReleaseDate = '2023-01-10' WHERE TrackID = 3;
+
+SELECT * FROM Tracks;
+
+SELECT Title, DurationSeconds
+FROM Tracks
+WHERE DurationSeconds > (SELECT AVG(DurationSeconds) FROM Tracks);
+
+SELECT Title, DurationSeconds
+FROM Tracks
+WHERE DurationSeconds = (SELECT MAX(DurationSeconds) FROM Tracks);
+
+SELECT Title, DurationSeconds,
+CASE
+	WHEN DurationSeconds <= 190 THEN 'Short track'
+	WHEN DurationSeconds > 190 OR DurationSeconds <= 230 THEN 'Medium track'
+	ELSE 'Long track'
+END AS [TrackCategory]
+FROM Tracks;
+
+SELECT Title, DurationSeconds,
+CASE
+	WHEN DurationSeconds <= 190 THEN 'Short track'
+	WHEN DurationSeconds <= 230 THEN 'Medium track'
+	ELSE 'Long track'
+END AS [TrackCategory]
+FROM Tracks;
+
+SELECT Title, DurationSeconds, AVG(DurationSeconds) OVER() AS [AverageDuration]
+FROM Tracks;
+
+SELECT Genre, AVG(DurationSeconds) AS [AvgTime]
+FROM Tracks
+GROUP BY Genre;
+
+SELECT Title, DurationSeconds, AVG(DurationSeconds) OVER(PARTITION BY Genre) AS [GenreAverage]
+FROM Tracks;
+
+SELECT Title, Genre, DurationSeconds, AVG(DurationSeconds) OVER(PARTITION BY Genre) AS [GenreAvgDuration]
+FROM Tracks;
+
+SELECT a.ArtistNickname, t.Title
+FROM Artists a
+LEFT JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE t.Price IS NOT NULL
+ORDER BY a.ArtistNickname ASC;
+
+SELECT a.ArtistNickname, t.Title
+FROM Tracks t
+RIGHT JOIN Artists a ON a.ArtistNickname = t.Artist
+WHERE t.Price IS NOT NULL
+ORDER BY a.ArtistNickname ASC;
+
+SELECT * FROM Users;
+SELECT SubscriptionType, COUNT(UserID) AS [TotalUsers]
+FROM Users
+GROUP BY SubscriptionType
+HAVING COUNT(UserID) > 4;
+
+SELECT UPPER(Title) AS [CapsTitle], Genre, DurationSeconds, MAX(DurationSeconds) OVER(PARTITION BY Genre) AS [MaxGenreDuration]
+FROM Tracks;
+
+SELECT a.ArtistNickname, t.Title, YEAR(t.ReleaseDate) AS [ReleaseYear]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist
+WHERE YEAR(t.ReleaseDate) > 2021;
+
+SELECT a.ArtistNickname, t.Title, YEAR(t.ReleaseDate) AS [ReleaseYear]
+FROM Tracks t
+RIGHT JOIN Artists a ON a.ArtistNickname = t.Artist
+WHERE YEAR(t.ReleaseDate) > 2021;
+
+SELECT a.ArtistNickname, t.Title, YEAR(t.ReleaseDate) AS [ReleaseYear]
+FROM Artists a
+INNER JOIN Tracks t ON a.ArtistNickname = t.Artist;
+
+SELECT Title, Price, 
+CASE
+	WHEN Price > (SELECT AVG(Price) FROM Tracks) THEN 'Дорожче середнього'
+	WHEN Price <= (SELECT AVG(Price) FROM Tracks) THEN 'Бюджетний варіант'
+	ELSE 'Безкоштовно/Пром'
+END AS [PriceCategory]
+FROM Tracks;
+
+SELECT Title, Genre, DurationSeconds, (MAX(DurationSeconds) OVER(PARTITION BY Genre)) - DurationSeconds AS [SecondsToLeader]
+FROM Tracks;
