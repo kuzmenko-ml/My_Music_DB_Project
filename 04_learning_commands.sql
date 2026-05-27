@@ -412,3 +412,36 @@ WHERE Genre  = 'Pop';
 DELETE 
 FROM Tracks
 WHERE DurationSeconds < 60;
+
+SELECT Title, Price
+FROM Tracks
+WHERE Price > (SELECT AVG(Price) FROM Tracks);
+
+WITH AveragePriceTable AS (
+	SELECT AVG(Price) AS [GlobalAvg]
+	FROM Tracks
+)
+
+SELECT t.Title, t.Price, a.GlobalAvg
+FROM Tracks t
+CROSS JOIN AveragePriceTable a
+WHERE t.Price > a.GlobalAvg;
+
+WITH MaxPriceCTE AS (
+	SELECT MAX(Price) AS [MaxGlobalPrice]
+	FROM Tracks
+)
+
+SELECT t.Title, t.Price, m.MaxGlobalPrice
+FROM Tracks t
+CROSS JOIN MaxPriceCTE m;
+
+WITH GenreAvgCTE AS (
+	SELECT Genre, AVG(Price) AS [AvgGenrePrice]
+	FROM Tracks
+	GROUP BY Genre
+)
+
+SELECT t.Title, t.Genre, t.Price, g.AvgGenrePrice
+FROM Tracks t
+INNER JOIN GenreAvgCTE g ON t.Genre = g.Genre;
