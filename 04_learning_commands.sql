@@ -445,3 +445,50 @@ WITH GenreAvgCTE AS (
 SELECT t.Title, t.Genre, t.Price, g.AvgGenrePrice
 FROM Tracks t
 INNER JOIN GenreAvgCTE g ON t.Genre = g.Genre;
+
+SELECT Title, Genre, Price
+INTO #ExpensiveTracks
+FROM Tracks
+WHERE Price > 15;
+
+SELECT * FROM #ExpensiveTracks;
+
+CREATE TABLE #GenreStats (
+	Genre NVARCHAR(50),
+	AvgPrice DECIMAL(10,2)
+);
+
+INSERT INTO #GenreStats
+SELECT Genre, AVG(Price) FROM Tracks GROUP BY Genre;
+
+SELECT Title
+INTO #TrackNames
+FROM Tracks;
+
+SELECT * FROM #TrackNames;
+
+SELECT Genre, AVG(Price) AS [AveragePrice]
+INTO #GenrePrices
+FROM Tracks
+GROUP BY Genre;
+
+SELECT * FROM #GenrePrices;
+
+SELECT Genre, MAX(Price) AS [MaxPrice]
+INTO #GenreMaxPrices
+FROM Tracks 
+GROUP BY Genre;
+	
+SELECT * FROM #GenreMaxPrices
+WHERE MaxPrice > 10;
+
+
+SELECT Genre, AVG(Price) AS [AvgPrice]
+INTO #BadGenrePrices
+FROM Tracks
+GROUP BY Genre;
+
+SELECT Title, t.Genre, Price
+FROM Tracks t
+INNER JOIN #BadGenrePrices as b ON t.Genre = b.Genre
+WHERE t.Price > b.AvgPrice;
