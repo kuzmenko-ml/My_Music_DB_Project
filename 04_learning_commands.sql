@@ -492,3 +492,52 @@ SELECT Title, t.Genre, Price
 FROM Tracks t
 INNER JOIN #BadGenrePrices as b ON t.Genre = b.Genre
 WHERE t.Price > b.AvgPrice;
+
+CREATE TABLE MyPlayList (
+PlayListID INT PRIMARY KEY IDENTITY(1,1),
+PlayListName NVARCHAR(100) NOT NULL,
+UserID INT,
+FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+SELECT * FROM MyPlayList;
+
+CREATE TABLE PlaylistTracks (
+PlayListID INT,
+TrackID INT,
+FOREIGN KEY (PlayListID) REFERENCES MyPlayList(PlayListID),
+FOREIGN KEY (TrackID) REFERENCES Tracks(TrackID)
+);
+
+SELECT * FROM PlaylistTracks;
+
+INSERT INTO MyPlayList (PlayListName, UserID) VALUES 
+('Ранковий вайб', 1),
+('Топ хіти', 2);
+
+INSERT INTO PlaylistTracks (PlayListID,TrackID) VALUES 
+(1,1),
+(2,2);
+
+ALTER TABLE MyPlayList ADD IsPublic BIT;
+
+UPDATE MyPlayList
+SET IsPublic = 1
+WHERE PlayListID = 1;
+
+UPDATE MyPlayList
+SET IsPublic = 0
+WHERE PlayListID = 2;
+
+UPDATE MyPlayList
+SET PlayListName = 'Super: ' + PlayListName;
+
+DELETE FROM Tracks WHERE TrackID = 1;
+
+DELETE FROM PlaylistTracks WHERE PlayListID = 1 AND TrackID = 1;
+
+SELECT * FROM PlaylistTracks;
+TRUNCATE TABLE PlaylistTracks;
+
+DROP TABLE IF EXISTS PlaylistTracks;
+DROP TABLE IF EXISTS MyPlayList;
