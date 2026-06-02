@@ -557,3 +557,8 @@ ON Tracks (Genre, Artist);
 CREATE INDEX IX_UserName_SubscriptionType
 ON Users (UserName)
 INCLUDE (SubscriptionType);
+
+EXEC GetTracksByGenre @GenreName = 'Rock';
+EXEC GetTracksByGenre @GenreName = 'Pop';
+SELECT * FROM Tracks;
+EXEC GetTracksByGenre @GenreName = 'Hip-Hop';
