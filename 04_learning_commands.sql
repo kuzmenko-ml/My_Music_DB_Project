@@ -562,3 +562,8 @@ EXEC GetTracksByGenre @GenreName = 'Rock';
 EXEC GetTracksByGenre @GenreName = 'Pop';
 SELECT * FROM Tracks;
 EXEC GetTracksByGenre @GenreName = 'Hip-Hop';
+
+EXEC TrackWithCheckingDS @Title = 'Song 1', @Artist = 'Artist A', @Genre = 'Pop', @DurationSeconds = 180;
+EXEC TrackWithCheckingDS @Title = 'Song 2', @Artist = 'Artist B', @Genre = 'Rock', @DurationSeconds = -5;
+
+EXEC GetTracksByGenre @GenreName = 'Pop';
