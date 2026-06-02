@@ -541,3 +541,19 @@ TRUNCATE TABLE PlaylistTracks;
 
 DROP TABLE IF EXISTS PlaylistTracks;
 DROP TABLE IF EXISTS MyPlayList;
+
+CREATE INDEX IX_Tracks_Title
+ON Tracks (Title);
+
+CREATE INDEX IX_Tracks_Genre
+ON Tracks (Genre);
+
+CREATE UNIQUE INDEX IX_Users_UserName 
+ON Users (UserName);
+
+CREATE INDEX IX_Tracks_Genre_Artist
+ON Tracks (Genre, Artist);
+
+CREATE INDEX IX_UserName_SubscriptionType
+ON Users (UserName)
+INCLUDE (SubscriptionType);
