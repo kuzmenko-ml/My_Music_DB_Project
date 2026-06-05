@@ -87,3 +87,37 @@ BEGIN
 		PRINT 'Помилка!';
 	END
 END;
+
+CREATE PROCEDURE SP_GetPremiumUsers 
+AS
+BEGIN
+	SELECT * FROM Users WHERE SubscriptionType = 'Premium';
+END;
+
+CREATE PROCEDURE SP_GetUsersBySubType
+	@SubType NVARCHAR(50)
+AS
+BEGIN
+	SELECT * FROM Users WHERE SubscriptionType = @SubType;
+END;
+
+CREATE PROCEDURE SP_SafeRecordListen
+	@UserID INT,
+	@TrackID INT
+AS
+BEGIN 
+	IF EXISTS (SELECT 1 FROM ListeningHistory WHERE UserID = @UserID 
+	AND TrackID = @TrackID 
+	AND CAST(ListenDate AS DATE) = CAST(GETDATE() AS DATE))
+		BEGIN 
+			PRINT 'Цей трек користувач вже слухав сьогодні!'
+		END;
+	ELSE
+		BEGIN
+			INSERT INTO ListeningHistory (UserID, TrackID, ListenDate) VALUES (@UserID, @TrackID,GETDATE())
+			PRINT 'Успішно додано!';
+		END;
+END;
+
+EXEC SP_GetUsersBySubType @SubType = 'Premium';
+EXEC SP_SafeRecordListen @UserID = 5, @TrackID = 10;
