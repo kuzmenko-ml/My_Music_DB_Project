@@ -121,3 +121,15 @@ END;
 
 EXEC SP_GetUsersBySubType @SubType = 'Premium';
 EXEC SP_SafeRecordListen @UserID = 5, @TrackID = 10;
+
+CREATE PROCEDURE SP_AdjustTrackPrices
+	@GenreFilter NVARCHAR(50),
+	@PercentIncrease DECIMAL(5,2),
+	@MaxPriceLimit DECIMAL(10,2)
+AS
+BEGIN 
+	UPDATE Tracks
+	SET Price = Price * (1 + @PercentIncrease / 100)
+	WHERE Genre = @GenreFilter AND Price < @MaxPriceLimit
+	PRINT 'Ціни успішно скориговано для жанру!';
+END;
